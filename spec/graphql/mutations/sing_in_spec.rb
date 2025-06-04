@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSepec.describe "SingIn", type: :request do 
+RSpec.describe "SingIn", type: :request do 
   let(:user) {create(:user, email: "newcust@demo.com", password: "password1234") }
 
   let(:query) do 

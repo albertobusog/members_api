@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "SingUp" , type: :request do
-  let(query) do 
+  let(:query) do 
     <<-GQL
       mutations ($email: String!, $password: String!, $role: String!) {
         singUp(input: {email: $email, password: $password, role: $role}) {

@@ -1,4 +1,4 @@
-FactoryBot.dfine do
+FactoryBot.define do
   factory :user do
     email { Facker::Internet.email }
     password { "password123" }
