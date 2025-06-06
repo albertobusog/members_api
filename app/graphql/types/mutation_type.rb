@@ -2,6 +2,7 @@
 
 module Types
   class MutationType < Types::BaseObject
+    field :sing_in, mutation: Mutations::SingIn
     field :sing_up, mutation: Mutations::SingUp
     
     field :test_field, String, null: false,
