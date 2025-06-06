@@ -1,12 +1,12 @@
 require "rails_helper"
 
-RSpec.describe "Invalid SingIn", type: :request do 
+RSpec.describe "Invalid SignIn", type: :request do 
   let(:user) {create(:user, email: "newcust@demo.com", password: "password1234") }
 
   let(:query) do 
     <<-GQL
       mutation ($email: String!, $password: String!) {
-        singUp(input: {email: $email, password: $password}) {
+        signUp(input: {email: $email, password: $password}) {
           token
           user {
             id
@@ -28,7 +28,7 @@ RSpec.describe "Invalid SingIn", type: :request do
       }
     }
     json = JSON.parse(response.body)
-    data = json["data"]["singIn"]
+    data = json["data"]["signIn"]
     
     expect(data["token"]).to be_nil
     expect(data["user"]).to be_nil

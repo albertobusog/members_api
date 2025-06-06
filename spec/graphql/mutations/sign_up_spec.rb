@@ -1,10 +1,10 @@
 require "rails_helper"
 
-RSpec.describe "SingUp" , type: :request do
+RSpec.describe "SignUp" , type: :request do
   let(:query) do 
     <<-GQL
       mutations ($email: String!, $password: String!, $role: String!) {
-        singUp(input: {email: $email, password: $password, role: $role}) {
+        signUp(input: {email: $email, password: $password, role: $role}) {
           user {
             id
             email
@@ -16,7 +16,7 @@ RSpec.describe "SingUp" , type: :request do
     GQL
   end
 
-  it "singup new customer" do
+  it "signup new customer" do
     post "/graphql", params: {
       query: query,
       variables: {
@@ -26,7 +26,7 @@ RSpec.describe "SingUp" , type: :request do
       }
     }
     json = JSON.parse(response.body)
-    data = json["data"]["singUp"]
+    data = json["data"]["signUp"]
 
     expect(data["user"]["email"]).to eq("newcust@demo.com")
     expect(data["user"]["role"]).to eq("client")

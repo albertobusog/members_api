@@ -2,8 +2,8 @@
 
 module Types
   class MutationType < Types::BaseObject
-    field :sing_in, mutation: Mutations::SingIn
-    field :sing_up, mutation: Mutations::SingUp
+    field :sign_in, mutation: Mutations::SignIn
+    field :sign_up, mutation: Mutations::SignUp
     
     field :test_field, String, null: false,
       description: "An example field added by the generator"
