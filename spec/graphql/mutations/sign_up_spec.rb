@@ -4,12 +4,13 @@ RSpec.describe "SignUp" , type: :request do
   let(:query) do 
     <<-GQL
       mutations ($email: String!, $password: String!, $role: String!) {
-        signUp(input: {email: $email, password: $password, role: $role}) {
-          user {
-            id
-            email
-            role
-          }
+        signUp(input: {
+          email: $email, 
+          password: $password, 
+          role: $role
+        }) {
+          user { id email role }
+          token
           errors
         }
       }
@@ -17,7 +18,8 @@ RSpec.describe "SignUp" , type: :request do
   end
 
   it "signup new customer" do
-    post "/graphql", params: {
+    post "/graphql", 
+    params: {
       query: query,
       variables: {
         email: "newcust@demo.com",

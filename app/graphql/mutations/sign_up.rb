@@ -8,6 +8,7 @@ module Mutations
 
     field :user, Types::UserType, null: true
     field :errors, [String], null: true
+    field :token, String, null: true
 
     def resolve (email:, password:, role: )
       user = User.new(email: email, password: password, role: role)
@@ -22,7 +23,8 @@ module Mutations
         { 
           user: nil,
           token: nil, 
-          errors: user.errors.full_messages }
+          errors: user.errors.full_messages 
+        }
       end
     end
   end

@@ -6,6 +6,7 @@ class GraphqlController < ApplicationController
   # but you'll have to authenticate your user separately
   # protect_from_forgery with: :null_session
   protect_from_forgery with: :null_session
+  skip_before_action :verify_authenticity_token
   
   def execute
     variables = prepare_variables(params[:variables])
@@ -13,9 +14,14 @@ class GraphqlController < ApplicationController
     operation_name = params[:operationName]
     context = {
       # Query context goes here, for example:
-      current_user: current_user,
+      current_user: current_user_from_token,
     }
-    result = MembersApiSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
+    result = MembersApiSchema.execute(
+      params[:query], 
+      variables: ensure_hash(paramsπ[:variables]), 
+      context: context, 
+      operation_name: params[operation_name] 
+      )
     render json: result
   rescue StandardError => e
     raise e unless Rails.env.development?
@@ -25,6 +31,29 @@ class GraphqlController < ApplicationController
   private
 
   # Handle variables in form data, JSON body, or a blank value
+  def current_user_from_token
+    token = request.headers["Authorization"]&.split(" ")&.last
+    return nil if token.blank?
+
+    begin
+      payload = Warden::JWTAuth::TokenDecoder.new.call(token)
+      User.find(payload["sub"])
+    rescue
+      nil
+    end
+  end
+
+  def ensure_hash
+    case ambiguous_param
+    when String
+      ambiguous_param.present? ? JSON.parse(ambiguous_param) : {}
+    when Hash, ActionController::Parameters
+      ambiguous_param
+    else
+      {}
+    end
+  end
+
   def prepare_variables(variables_param)
     case variables_param
     when String

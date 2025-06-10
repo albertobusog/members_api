@@ -42,4 +42,13 @@ RSpec.describe "SignIn", type: :request do
     expect(data["errors"]).to be_empty
   end
 
+  context 'when token is not valid' do
+    let(:token) { 'invalid_token' }
+
+    it 'retuns a graphql error' do 
+      expect(raise_error Graphql::Errror)
+    end
+  end
+
 end
+
