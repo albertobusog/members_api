@@ -43,9 +43,9 @@ RSpec.configure do |config|
     Rails.root.join('spec/fixtures')
   ]
   config.after(:each, type: :request) do |example|
-    unless response.media_type == "aplication/json"
-      puts "respuesta no es JSON. BODY"
-      puts response.body
+    unless response.media_type == "application/json"
+      puts "respuesta no es JSON. BODY\n\n#{response&.body}"
+      #puts response.body
     end
   end
   # If you're not using ActiveRecord, or you'd prefer not to run each of your

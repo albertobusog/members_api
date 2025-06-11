@@ -1,27 +1,28 @@
 # frozen_string_literal: true
 
 class GraphqlController < ApplicationController
-  # If accessing from outside this domain, nullify the session
-  # This allows for outside API access while preventing CSRF attacks,
-  # but you'll have to authenticate your user separately
-  # protect_from_forgery with: :null_session
-  protect_from_forgery with: :null_session
-  skip_before_action :verify_authenticity_token
-  
+  #protect_from_forgery with: :null_session
+  #skip_before_action :verify_authenticity_token
+
+  #before_action :authenticate_graphql_user, unless: -> { public_operation? }
+  #skip_before_action :verify_authenticity_token
+  #before_action :authenticate_user!
   def execute
     variables = prepare_variables(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
+
     context = {
-      # Query context goes here, for example:
-      current_user: current_user_from_token,
+      current_user: current_user_from_token
     }
+
     result = MembersApiSchema.execute(
-      params[:query], 
-      variables: ensure_hash(paramsπ[:variables]), 
-      context: context, 
-      operation_name: params[operation_name] 
-      )
+      query,
+      variables: ensure_hash(variables),
+      context: context,
+      operation_name: operation_name
+    )
+
     render json: result
   rescue StandardError => e
     raise e unless Rails.env.development?
@@ -30,7 +31,6 @@ class GraphqlController < ApplicationController
 
   private
 
-  # Handle variables in form data, JSON body, or a blank value
   def current_user_from_token
     token = request.headers["Authorization"]&.split(" ")&.last
     return nil if token.blank?
@@ -43,7 +43,20 @@ class GraphqlController < ApplicationController
     end
   end
 
-  def ensure_hash
+  def authenticate_graphql_user
+    head :unauthorized unless current_user_from_token
+  end
+
+  def public_operation?
+  query_string = request.request_parameters["query"].to_s
+  Rails.logger.debug("Query received: #{query_string}")
+  query_string.match?(/mutation\s+(SignIn|SignUp)/i)
+  #Rails.logger.debug "PARAMS: #{params.to_unsafe_h.inspect}"
+  #query_string = params[:query] || params.dig(:params, :query) || ""
+  #query_string.match?(/mutation\s+(SignIn|SignUp)/i)
+  end
+
+  def ensure_hash(ambiguous_param)
     case ambiguous_param
     when String
       ambiguous_param.present? ? JSON.parse(ambiguous_param) : {}
@@ -57,15 +70,11 @@ class GraphqlController < ApplicationController
   def prepare_variables(variables_param)
     case variables_param
     when String
-      if variables_param.present?
-        JSON.parse(variables_param) || {}
-      else
-        {}
-      end
+      variables_param.present? ? JSON.parse(variables_param) : {}
     when Hash
       variables_param
     when ActionController::Parameters
-      variables_param.to_unsafe_hash # GraphQL-Ruby will validate name and type of incoming variables.
+      variables_param.to_unsafe_hash
     when nil
       {}
     else

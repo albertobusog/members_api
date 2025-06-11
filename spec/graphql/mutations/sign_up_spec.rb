@@ -1,15 +1,19 @@
 require "rails_helper"
 
-RSpec.describe "SignUp" , type: :request do
-  let(:query) do 
+RSpec.describe "SignUp", type: :request do
+  let(:query) do
     <<-GQL
-      mutations ($email: String!, $password: String!, $role: String!) {
+      mutation($email: String!, $password: String!, $role: String!) {
         signUp(input: {
-          email: $email, 
-          password: $password, 
+          email: $email,
+          password: $password,
           role: $role
         }) {
-          user { id email role }
+          user {
+            id
+            email
+            role
+          }
           token
           errors
         }
@@ -18,15 +22,19 @@ RSpec.describe "SignUp" , type: :request do
   end
 
   it "signup new customer" do
-    post "/graphql", 
-    params: {
-      query: query,
-      variables: {
-        email: "newcust@demo.com",
-        password: "password1234",
-        role: "client"
-      }
-    }
+    post "/graphql",
+         params: {
+           query: query,
+           variables: {
+             email: "newcust@demo.com",
+             password: "password1234",
+             role: "client"
+           }
+         }.to_json,
+         headers: { "Content-Type" => "application/json" }
+
+    expect(response).to have_http_status(:ok)
+
     json = JSON.parse(response.body)
     data = json["data"]["signUp"]
 

@@ -30,7 +30,8 @@ RSpec.describe "SignIn", type: :request do
       headers: {
         "Content-Type" => "application/json"
       }
-     }
+     }.to_json,
+    headers: { "Content-Type" => "application/json" }
     puts "STATUS: #{response.status}"
     puts "BODY:\n#{response.body}"
 
@@ -41,14 +42,5 @@ RSpec.describe "SignIn", type: :request do
     expect(data["token"]).not_to be_nil
     expect(data["errors"]).to be_empty
   end
-
-  context 'when token is not valid' do
-    let(:token) { 'invalid_token' }
-
-    it 'retuns a graphql error' do 
-      expect(raise_error Graphql::Errror)
-    end
-  end
-
 end
 

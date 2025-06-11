@@ -26,7 +26,8 @@ RSpec.describe "Invalid SignIn", type: :request do
         email: "newcust@demo.com",
         password: "wrongpass"
       }
-    }
+    }.to_json,
+    headers: { "Content-Type" => "application/json" }
     json = JSON.parse(response.body)
     data = json["data"]["signIn"]
     
