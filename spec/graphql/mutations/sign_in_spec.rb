@@ -6,10 +6,11 @@ RSpec.describe "SignIn", type: :request do
   let(:query) do 
     <<-GQL
       mutation ($email: String!, $password: String!) {
-        signUp(input: {email: $email, password: $password}) {
+        signIn(input: {email: $email, password: $password}) {
           user {
             id
             email
+            role
           }
           token
           errors
@@ -26,6 +27,7 @@ RSpec.describe "SignIn", type: :request do
       variables: {
         email: "newcust@demo.com",
         password: "password1234",
+        role: "client"
       }.to_json,
       headers: {
         "Content-Type" => "application/json"

@@ -3,12 +3,8 @@ require "rails_helper"
 RSpec.describe "SignUp", type: :request do
   let(:query) do
     <<-GQL
-      mutation($email: String!, $password: String!, $role: String!) {
-        signUp(input: {
-          email: $email,
-          password: $password,
-          role: $role
-        }) {
+      mutation($input: SignUpInput!) {
+        signUp(input: $input) {
           user {
             id
             email
@@ -26,9 +22,11 @@ RSpec.describe "SignUp", type: :request do
          params: {
            query: query,
            variables: {
-             email: "newcust@demo.com",
-             password: "password1234",
-             role: "client"
+             input: {
+               email: "newcust@demo.com",
+               password: "password1234",
+               role: "client"
+             }
            }
          }.to_json,
          headers: { "Content-Type" => "application/json" }

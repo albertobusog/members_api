@@ -24,7 +24,7 @@ module Mutations
       { 
         user:user, 
         token: token, 
-        errrors: [] 
+        errors: [] 
       }
     end
   end
