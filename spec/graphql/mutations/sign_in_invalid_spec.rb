@@ -6,7 +6,7 @@ RSpec.describe "Invalid SignIn", type: :request do
   let(:query) do 
     <<-GQL
       mutation ($email: String!, $password: String!) {
-        signUp(input: {email: $email, password: $password}) {
+        signIn(input: {email: $email, password: $password}) {
           token
           user {
             id
