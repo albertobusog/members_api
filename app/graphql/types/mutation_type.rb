@@ -6,7 +6,6 @@ module Types
     field :sign_up, mutation: Mutations::SignUp
     field :create_pass, mutation: Mutations::CreatePass
     field :update_pass, mutation: Mutations::UpdatePass
-    field :create_pass, mutation: Mutations::CreatePass
     
     field :test_field, String, null: false,
       description: "An example field added by the generator"
