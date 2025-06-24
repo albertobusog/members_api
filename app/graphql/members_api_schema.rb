@@ -15,7 +15,7 @@ class MembersApiSchema < GraphQL::Schema
     # end
     super
   end
-  
+
   # Union and Interface Resolution
   def self.resolve_type(abstract_type, obj, ctx)
     # TODO: Implement this method

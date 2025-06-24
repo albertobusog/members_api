@@ -47,7 +47,7 @@ RSpec.configure do |config|
     next if response.nil?
     unless response&.media_type == "application/json"
       puts "respuesta no es JSON. BODY\n\n#{response&.body}"
-      #puts response.body
+      # puts response.body
     end
   end
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
@@ -60,8 +60,8 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation)
   end
   config.around(:each) do |example|
-        DatabaseCleaner.cleaning { example.run}
-  end 
+        DatabaseCleaner.cleaning { example.run }
+  end
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
 

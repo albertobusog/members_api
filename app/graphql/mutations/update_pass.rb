@@ -6,17 +6,17 @@ module Mutations
     argument :expires_at, GraphQL::Types::ISO8601Date, required: true
 
     field :pass, Types::PassType, null: true
-    field :errors, [String], null: false
+    field :errors, [ String ], null: false
 
     def resolve(id:, name:, visits:, expires_at:)
       user = context[:current_user]
-      return { pass: nil, errors: ["Not authorized"] } unless user&.admin?
+      return { pass: nil, errors: [ "Not authorized" ] } unless user&.admin?
 
       pass = Pass.find_by(id: id)
-      return { pass: nil, errors: ["Pass not found"] } unless pass
+      return { pass: nil, errors: [ "Pass not found" ] } unless pass
 
       if pass.purchases.where("remaining_visits > 0").exists?
-        return { pass: nil, errors: ["Cannot edit pass with clients having pending visits"] }
+        return { pass: nil, errors: [ "Cannot edit pass with clients having pending visits" ] }
       end
 
       if pass.update(name: name, visits: visits, expires_at: expires_at)

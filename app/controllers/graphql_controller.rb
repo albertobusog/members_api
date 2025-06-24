@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 class GraphqlController < ApplicationController
-  #protect_from_forgery with: :null_session
-  #skip_before_action :verify_authenticity_token
+  # protect_from_forgery with: :null_session
+  # skip_before_action :verify_authenticity_token
 
-  #before_action :authenticate_graphql_user, unless: -> { public_operation? }
-  #skip_before_action :verify_authenticity_token
-  #before_action :authenticate_user!
+  # before_action :authenticate_graphql_user, unless: -> { public_operation? }
+  # skip_before_action :verify_authenticity_token
+  # before_action :authenticate_user!
   def execute
     variables = prepare_variables(params[:variables])
     query = params[:query]
@@ -51,9 +51,9 @@ class GraphqlController < ApplicationController
   query_string = request.request_parameters["query"].to_s
   Rails.logger.debug("Query received: #{query_string}")
   query_string.match?(/mutation\s+(SignIn|SignUp)/i)
-  #Rails.logger.debug "PARAMS: #{params.to_unsafe_h.inspect}"
-  #query_string = params[:query] || params.dig(:params, :query) || ""
-  #query_string.match?(/mutation\s+(SignIn|SignUp)/i)
+    # Rails.logger.debug "PARAMS: #{params.to_unsafe_h.inspect}"
+    # query_string = params[:query] || params.dig(:params, :query) || ""
+    # query_string.match?(/mutation\s+(SignIn|SignUp)/i)
   end
 
   def ensure_hash(ambiguous_param)
@@ -86,6 +86,6 @@ class GraphqlController < ApplicationController
     logger.error e.message
     logger.error e.backtrace.join("\n")
 
-    render json: { errors: [{ message: e.message, backtrace: e.backtrace }], data: {} }, status: 500
+    render json: { errors: [ { message: e.message, backtrace: e.backtrace } ], data: {} }, status: 500
   end
 end

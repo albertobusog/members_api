@@ -7,23 +7,23 @@ module Mutations
     argument :role, String, required: true
 
     field :user, Types::UserType, null: true
-    field :errors, [String], null: true
+    field :errors, [ String ], null: true
     field :token, String, null: true
 
-    def resolve (email:, password:, role: )
+    def resolve (email:, password:, role:)
       user = User.new(email: email, password: password, role: role)
       if user.save
         token = Warden::JWTAuth::UserEncoder.new.call(user, :user, nil).first
-        { 
-          user: user, 
+        {
+          user: user,
           token: token,
-          errors: [] 
+          errors: []
         }
       else
-        { 
+        {
           user: nil,
-          token: nil, 
-          errors: user.errors.full_messages 
+          token: nil,
+          errors: user.errors.full_messages
         }
       end
     end

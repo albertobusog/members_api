@@ -1,9 +1,9 @@
 require "rails_helper"
 
-RSpec.describe "SignIn", type: :request do 
-  let(:user) {create(:user, email: "newcust@demo.com", password: "password1234") }
+RSpec.describe "SignIn", type: :request do
+  let(:user) { create(:user, email: "newcust@demo.com", password: "password1234") }
 
-  let(:query) do 
+  let(:query) do
     <<-GQL
       mutation ($email: String!, $password: String!) {
         signIn(input: {email: $email, password: $password}) {
@@ -18,12 +18,12 @@ RSpec.describe "SignIn", type: :request do
       }
     GQL
   end
-  
+
   context "when credentials are valid" do
   it "returns token if user its validated" do
-    user 
+    user
 
-     post "/graphql", 
+     post "/graphql",
      params: {
       query: query,
       variables: {
@@ -67,7 +67,6 @@ RSpec.describe "SignIn", type: :request do
       expect(data["token"]).to be_nil
       expect(data["user"]).to be_nil
       expect(data["errors"]).to include("Invalid credentials")
-    end 
+    end
   end
 end
-

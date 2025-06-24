@@ -70,7 +70,7 @@ end
 gem "graphql", "~> 2.5"
 gem "graphiql-rails", group: :development
 
-#gem "rspec-rails", "~> 8.0"
+# gem "rspec-rails", "~> 8.0"
 
 gem "devise", "~> 4.9"
 

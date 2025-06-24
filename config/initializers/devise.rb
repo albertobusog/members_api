@@ -17,8 +17,8 @@ Devise.setup do |config|
   # config.secret_key = '852c15350fbfef3d063b361b7aa92f7d3fcdf3b5bf55e329acf46d0bc4068bb36141f842ca6763a1a636d041d48a63ead1cbe010df4532d897194aba40762bd5'
   config.jwt do |jwt|
   jwt.secret = Rails.application.credentials.dig(:devise, :jwt_secret_key) || ENV["DEVISE_JWT_SECRET_KEY"]
-  jwt.dispatch_requests = [["POST", %r{^/graphql$}]]
-  jwt.revocation_requests = [["POST", %r{^/graphql$}]]
+  jwt.dispatch_requests = [ [ "POST", %r{^/graphql$} ] ]
+  jwt.revocation_requests = [ [ "POST", %r{^/graphql$} ] ]
   jwt.expiration_time = 1.day.to_i
 end
   # ==> Controller configuration
@@ -29,7 +29,7 @@ end
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  config.mailer_sender = "please-change-me-at-config-initializers-devise@example.com"
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
@@ -41,7 +41,7 @@ end
   # Load and configure the ORM. Supports :active_record (default) and
   # :mongoid (bson_ext recommended) by default. Other ORMs may be
   # available as additional gems.
-  require 'devise/orm/active_record'
+  require "devise/orm/active_record"
 
   # ==> Configuration for any authentication mechanism
   # Configure which keys are used when authenticating a user. The default is
@@ -63,12 +63,12 @@ end
   # Configure which authentication keys should be case-insensitive.
   # These keys will be downcased upon creating or modifying a user and when used
   # to authenticate or find a user. Default is :email.
-  config.case_insensitive_keys = [:email]
+  config.case_insensitive_keys = [ :email ]
 
   # Configure which authentication keys should have whitespace stripped.
   # These keys will have whitespace before and after removed upon creating or
   # modifying a user and when used to authenticate or find a user. Default is :email.
-  config.strip_whitespace_keys = [:email]
+  config.strip_whitespace_keys = [ :email ]
 
   # Tell if authentication through request.params is enabled. True by default.
   # It can be set to an array that will enable params authentication only for the
@@ -102,7 +102,7 @@ end
   # Notice that if you are skipping storage for all authentication paths, you
   # may want to disable generating routes to Devise's sessions controller by
   # passing skip: :sessions to `devise_for` in your config/routes.rb
-  config.skip_session_storage = [:http_auth]
+  config.skip_session_storage = [ :http_auth ]
 
   # By default, Devise cleans up the CSRF token on authentication to
   # avoid CSRF token fixation attacks. This means that, when using AJAX
@@ -268,10 +268,10 @@ end
   # should add them to the navigational formats lists.
   #
   # The "*/*" below is required to match Internet Explorer requests.
-  config.navigational_formats = [ ]
-  #config.middleware.delete ActionDispatch::Cookies
-  #config.middleware.delete ActionDispatch::Session::CookieStore
-  
+  config.navigational_formats = []
+  # config.middleware.delete ActionDispatch::Cookies
+  # config.middleware.delete ActionDispatch::Session::CookieStore
+
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
 

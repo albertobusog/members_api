@@ -1,5 +1,4 @@
 class RegistrationsController < ApplicationController
-  
   def new
     @user = User.new
   end
@@ -12,7 +11,7 @@ class RegistrationsController < ApplicationController
     else
       render :new
     end
-    #render plain: params[:user]
+    # render plain: params[:user]
   end
 
 private
@@ -20,5 +19,4 @@ private
   def user_params
     params.required(:user).permit(:email, :password, :password_confirmation)
   end
-
-end 
+end

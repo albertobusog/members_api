@@ -4,8 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null
-  
-  #enum role: { client: "client", admin: "admin"}
+
+  # enum role: { client: "client", admin: "admin"}
   def admin?
     role == "admin"
   end
