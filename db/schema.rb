@@ -10,13 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_18_002542) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_24_004631) do
   create_table "passes", force: :cascade do |t|
     t.string "name"
     t.integer "visits"
     t.date "expires_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "purchases", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "pass_id", null: false
+    t.integer "remaining_visits"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pass_id"], name: "index_purchases_on_pass_id"
+    t.index ["user_id"], name: "index_purchases_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -31,4 +41,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_18_002542) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "purchases", "passes"
+  add_foreign_key "purchases", "users"
 end

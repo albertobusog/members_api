@@ -7,5 +7,6 @@ class User < ApplicationRecord
   
   #enum role: { client: "client", admin: "admin"}
 
-
+  has_many :purchases
+  has_many :passes, through: :purchases
 end
