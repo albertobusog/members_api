@@ -6,7 +6,13 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null
   
   #enum role: { client: "client", admin: "admin"}
+  def admin?
+    role == "admin"
+  end
 
+  def user?
+    role == "user"
+  end
   has_many :purchases
   has_many :passes, through: :purchases
 end
