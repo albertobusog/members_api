@@ -1,11 +1,11 @@
 require "rails_helper"
 
-Rspec.describe "DeletePass", type: :request do
+RSpec.describe "DeletePass", type: :request do
   let(:admin) { create(:user, role: "admin") }
   let(:client) { create(:user, role: "client") }
   let!(:pass) { create(:pass, name: "To Delete") }
 
-  let(mutation) do
+  let(:mutation) do
     <<-GQL
       mutation($id:ID!) {
         deletePass(input: { id: $id}){

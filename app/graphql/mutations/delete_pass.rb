@@ -3,7 +3,7 @@ module Mutations
     argument :id, ID, required: true
 
     field :success, Boolean, null: false
-    field :errors, [String], null: false
+    field :errors, [ String ], null: false
 
     def resolve(id:)
       user = context[:current_user]
@@ -14,7 +14,7 @@ module Mutations
       if pass&.destroy
         { success: true, errors: [] }
       else
-        { success: false, errors: ["Could not delete pass"] }
+        { success: false, errors: [ "Could not delete pass" ] }
       end
     end
   end
