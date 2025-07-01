@@ -20,7 +20,7 @@ module Types
 
     # Add root-level fields here.
     # They will be entry points for queries on your schema.
-    field :passes, [Types::PassType], null: false,
+    field :passes, [ Types::PassType ], null: false,
     description: "Returns a list of all available passes"
 
     def passes
