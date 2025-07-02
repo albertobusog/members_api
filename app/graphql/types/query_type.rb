@@ -18,6 +18,14 @@ module Types
       ids.map { |id| context.schema.object_from_id(id, context) }
     end
 
+    field :all_passes, [ Types::PassType ], null: false
+
+    def all_passes
+      user = context[:current_user]
+      raise Graphql::ExecutionError, "Not authorized" unless user&.admin?
+
+      Pass.includes(:user).all
+    end
     # Add root-level fields here.
     # They will be entry points for queries on your schema.
     field :passes, [ Types::PassType ], null: false,
