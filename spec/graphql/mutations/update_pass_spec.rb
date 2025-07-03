@@ -3,7 +3,8 @@ require "rails_helper"
 RSpec.describe "UpdatePass", type: :request do
   let(:admin) { create(:user, role: "admin") }
   let(:client) { create(:user, role: "client") }
-  let(:pass) { create(:pass, name: "Original", visits: 10, expires_at: 1.month.from_now) }
+  let(:pass) { create(:pass, name: "Original", visits: 10, expires_at: 1.month.from_now, user: admin) }
+  let(:pass) { create(:pass, name: "Original", visits: 10, expires_at: 1.month.from_now, user: client) }
 
   let(:mutation) do
     <<~GQL

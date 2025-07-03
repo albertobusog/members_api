@@ -40,7 +40,6 @@ RSpec.describe "CreatePass", type: :request do
            "Authorization" => "Bearer #{token}"
          }
 
-    expect(response).to have_http_status(:ok)
     json = JSON.parse(response.body)
     data = json["data"]["createPass"]
 

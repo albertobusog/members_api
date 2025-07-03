@@ -1,5 +1,6 @@
 class Pass < ApplicationRecord
   has_many :purchases, dependent: :restrict_with_error
+  belongs_to :user
 
   validates :name, presence: true
   validates :visits, numericality: { greater_than: 0 }

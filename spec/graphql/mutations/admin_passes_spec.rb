@@ -5,8 +5,8 @@ RSpec.describe "AdminPasses", type: :request do
   let(:client1) { create(:user, role: "client") }
   let(:client2) { create(:user, role: "client") }
 
-  let!(:pass1) { create(:pass, name: "Pass1") }
-  let!(:pass2) { create(:pass, name: "Pass2") }
+  let!(:pass1) { create(:pass, name: "Pass1", user: admin) }
+  let!(:pass2) { create(:pass, name: "Pass2", user: admin) }
 
   let(:query) do
     <<-GQL

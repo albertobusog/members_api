@@ -3,7 +3,8 @@ require "rails_helper"
 RSpec.describe "DeletePass", type: :request do
   let(:admin) { create(:user, role: "admin") }
   let(:client) { create(:user, role: "client") }
-  let!(:pass) { create(:pass, name: "To Delete") }
+  let!(:pass) { create(:pass, name: "To Delete", user: admin) }
+  # let!(:pass) { create(:pass, name: "To Delete", user: client) }
 
   let(:mutation) do
     <<-GQL

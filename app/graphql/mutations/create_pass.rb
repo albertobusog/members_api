@@ -13,7 +13,7 @@ module Mutations
         return { pass: nil, errors: [ "Not authorized" ] }
       end
 
-      pass = Pass.new(name: name, visits: visits, expires_at: expires_at)
+      pass = Pass.new(name: name, visits: visits, expires_at: expires_at, user: user)
 
       if pass.save
         { pass: pass, errors: [] }
