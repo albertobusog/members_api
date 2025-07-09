@@ -3,18 +3,19 @@ require "rails_helper"
 RSpec.describe "UpdatePass", type: :request do
   let(:admin) { create(:user, role: "admin") }
   let(:client) { create(:user, role: "client") }
-  let(:pass) { create(:pass, name: "Original", visits: 10, expires_at: 1.month.from_now, user: admin) }
-  let(:pass) { create(:pass, name: "Original", visits: 10, expires_at: 1.month.from_now, user: client) }
+  let(:pass) { create(:pass, name: "Original", visits: 10, expires_at: 1.month.from_now, price: 123.45, user: admin) }
+  let(:pass) { create(:pass, name: "Original", visits: 10, expires_at: 1.month.from_now, price: 123.45, user: client) }
 
   let(:mutation) do
     <<~GQL
-      mutation($id: ID!, $name: String!, $visits: Int!, $expiresAt: ISO8601Date!) {
-        updatePass(input: { id: $id, name: $name, visits: $visits, expiresAt: $expiresAt }) {
+      mutation($id: ID!, $name: String!, $visits: Int!, $expiresAt: ISO8601Date!, $price: Float!) {
+        updatePass(input: { id: $id, name: $name, visits: $visits, expiresAt: $expiresAt price: $price}) {
           pass {
             id
             name
             visits
             expiresAt
+            price
           }
           errors
         }
@@ -31,7 +32,8 @@ RSpec.describe "UpdatePass", type: :request do
                id: pass.id,
                name: "Updated",
                visits: 15,
-               expiresAt: 2.months.from_now.to_date
+               expiresAt: 2.months.from_now.to_date,
+               price: 123.45
              }
            }.to_json,
            headers: auth_headers(admin)
@@ -52,7 +54,8 @@ RSpec.describe "UpdatePass", type: :request do
                id: pass.id,
                name: "Hacked",
                visits: 20,
-               expiresAt: 2.months.from_now.to_date
+               expiresAt: 2.months.from_now.to_date,
+               price: 123.45
              }
            }.to_json,
            headers: auth_headers(client)

@@ -36,8 +36,8 @@ RSpec.describe "SignIn", type: :request do
       }
      }.to_json,
     headers: { "Content-Type" => "application/json" }
-    puts "STATUS: #{response.status}"
-    puts "BODY:\n#{response.body}"
+    #puts "STATUS: #{response.status}"
+    #puts "BODY:\n#{response.body}"
 
     json = JSON.parse(response.body)
     data = json["data"]["signIn"]

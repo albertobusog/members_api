@@ -22,7 +22,7 @@ module Types
 
     def all_passes
       user = context[:current_user]
-      raise Graphql::ExecutionError, "Not authorized" unless user&.admin?
+      raise GraphQL::ExecutionError, "Not authorized" unless user&.admin?
 
       Pass.includes(:user).all
     end

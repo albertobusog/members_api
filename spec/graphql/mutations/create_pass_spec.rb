@@ -5,17 +5,19 @@ RSpec.describe "CreatePass", type: :request do
 
   let(:query) do
     <<-GQL
-      mutation($name: String!, $visits: Int!, $expiresAt: ISO8601Date!) {
+      mutation($name: String!, $visits: Int!, $expiresAt: ISO8601Date!, $price: Float!) {
         createPass(input: {
           name: $name,
           visits: $visits,
           expiresAt: $expiresAt
+          price: $price
         }) {
           pass {
             id
             name
             visits
             expiresAt
+            price
           }
           errors
         }
@@ -32,7 +34,8 @@ RSpec.describe "CreatePass", type: :request do
            variables: {
              name: "Yoga Pack",
              visits: 10,
-             expiresAt: 1.month.from_now.to_date.iso8601
+             expiresAt: 1.month.from_now.to_date.iso8601,
+             price: 299.99
            }
          }.to_json,
          headers: {
@@ -45,6 +48,7 @@ RSpec.describe "CreatePass", type: :request do
 
     expect(data["pass"]["name"]).to eq("Yoga Pack")
     expect(data["pass"]["visits"]).to eq(10)
+    ecpect(data["pass"]["price"]).to eq(299.99)
     expect(data["errors"]).to eq(nil)
   end
 
@@ -58,7 +62,8 @@ RSpec.describe "CreatePass", type: :request do
            variables: {
              name: "Pilates Pack",
              visits: 5,
-             expiresAt: 1.month.from_now.to_date.iso8601
+             expiresAt: 1.month.from_now.to_date.iso8601,
+             price: 299.99
            }
          }.to_json,
          headers: {

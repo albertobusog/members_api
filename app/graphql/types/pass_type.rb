@@ -5,5 +5,6 @@ module Types
     field :visits, Integer, null: false
     field :expires_at, GraphQL::Types::ISO8601Date, null: false
     field :user, Types::UserType, null: false
+    field :price, Float, null: false
   end
 end
