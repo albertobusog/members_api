@@ -20,11 +20,9 @@ module Mutations
         return { pass: nil, errors: [ "Cannot edit pass with clients having pending visits" ] }
       end
 
-      if pass.update(name: name, visits: visits, expires_at: expires_at, price: price)
-        { pass: pass, errors: [] }
-      else
-        { pass: nil, errors: pass.errors.full_messages }
-      end
+      pass.update(name: name, visits: visits, expires_at: expires_at, price: price) ?
+      { pass: pass, errors: [] } :
+      { pass: nil, errors: pass.errors.full_messages }      
     end
   end
 end

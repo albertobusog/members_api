@@ -11,11 +11,7 @@ module Mutations
 
       pass = Pass.find_by(id: id)
 
-      if pass&.destroy
-        { success: true, errors: [] }
-      else
-        { success: false, errors: [ "Could not delete pass" ] }
-      end
+      pass&.destroy ? { success: true, errors: [] } : { success: false, errors: ["Could not delete pass"] }
     end
   end
 end
