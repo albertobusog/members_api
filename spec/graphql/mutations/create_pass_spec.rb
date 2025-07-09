@@ -45,7 +45,7 @@ RSpec.describe "CreatePass", type: :request do
 
     expect(data["pass"]["name"]).to eq("Yoga Pack")
     expect(data["pass"]["visits"]).to eq(10)
-    expect(data["errors"]).to eq([])
+    expect(data["errors"]).to eq(nil)
   end
 
   it "returns error if non-admin tries to create pass" do
