@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_09_233359) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_09_235155) do
   create_table "passes", force: :cascade do |t|
     t.string "name"
     t.integer "visits"
@@ -30,6 +30,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_09_233359) do
     t.datetime "updated_at", null: false
     t.datetime "purchase_date"
     t.integer "remaining_time"
+    t.decimal "price"
     t.index ["pass_id"], name: "index_purchases_on_pass_id"
     t.index ["user_id"], name: "index_purchases_on_user_id"
   end

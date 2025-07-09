@@ -64,7 +64,7 @@ RSpec.describe "UpdatePass", type: :request do
     end
 
     it "fails when pass has clients with pending visits" do
-      create(:purchase, pass: pass, user: client, remaining_time: 5)
+      create(:purchase, pass: pass, user: client, remaining_time: 5, purchase_date: Date.today)
 
       post "/graphql",
            params: {
