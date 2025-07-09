@@ -48,7 +48,7 @@ RSpec.describe "CreatePass", type: :request do
 
     expect(data["pass"]["name"]).to eq("Yoga Pack")
     expect(data["pass"]["visits"]).to eq(10)
-    ecpect(data["pass"]["price"]).to eq(299.99)
+    expect(data["pass"]["price"]).to eq(299.99)
     expect(data["errors"]).to eq(nil)
   end
 
