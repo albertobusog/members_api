@@ -7,9 +7,10 @@ module Mutations
 
     def resolve(id:)
       user = context[:current_user]
-      raise GraphQL::ExecutionError, "Not authorized" unless user&.admin?
+      return { success: false, errors: [ "Not authorized" ] } unless user&.admin?
 
       pass = Pass.find_by(id: id)
+      return { success: false, errors: [ "Pass not found" ] } unless pass
 
       pass&.destroy ? { success: true, errors: [] } : { success: false, errors: ["Could not delete pass"] }
     end

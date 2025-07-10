@@ -45,9 +45,10 @@ RSpec.describe "DeletePass", type: :request do
         headers: auth_headers(client)
 
       json = JSON.parse(response.body)
-      error = json["errors"].first
+      data = json["data"]["deletePass"]
 
-      expect(error["message"]).to eq("Not authorized")
+      expect(data["success"]).to be false
+      expect(data["errors"]).to include("Not authorized")
     end
   end
 end
