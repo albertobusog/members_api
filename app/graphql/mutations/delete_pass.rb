@@ -7,16 +7,16 @@ module Mutations
 
     def resolve(id:)
       user = context[:current_user]
-      return { success: false, errors: ["Not authorized"] } unless user&.admin?
+      return { success: false, errors: [ "Not authorized" ] } unless user&.admin?
 
       pass = Pass.find_by(id: id)
-      return { success: false, errors: ["Pass not found"] } unless pass
+      return { success: false, errors: [ "Pass not found" ] } unless pass
 
       if pass.purchases.where("remaining_visits > 0").exists?
-        return { success: false, errors: ["Cannot delete pass with clients having pending visits"] }
+        return { success: false, errors: [ "Cannot delete pass with clients having pending visits" ] }
       end
 
-      pass.destroy ? { success: true, errors: [] } : { success: false, errors: ["Could not delete pass"] }
+      pass.destroy ? { success: true, errors: [] } : { success: false, errors: [ "Could not delete pass" ] }
     end
   end
 end

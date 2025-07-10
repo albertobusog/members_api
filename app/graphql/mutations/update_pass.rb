@@ -22,7 +22,7 @@ module Mutations
 
       pass.update(name: name, visits: visits, expires_at: expires_at, price: price) ?
       { pass: pass, errors: [] } :
-      { pass: nil, errors: pass.errors.full_messages }      
+      { pass: nil, errors: pass.errors.full_messages }
     end
   end
 end

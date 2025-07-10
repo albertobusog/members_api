@@ -36,7 +36,7 @@ RSpec.describe "DeletePass", type: :request do
 
     it "fails if pass has clients with pending visits" do
       purchase = create(:purchase, pass: pass, user: client, remaining_visits: 3, purchase_date: Date.today, remaining_time: 10)
-    
+
       post "/graphql",
          params: {
            query: mutation,

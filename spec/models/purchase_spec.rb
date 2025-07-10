@@ -29,6 +29,4 @@ RSpec.describe Purchase, type: :model do
     expect(purchase).to be_invalid
     expect(purchase.errors[:remaining_time]).to include("must be greater than or equal to 0")
   end
-
-
 end
