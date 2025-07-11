@@ -7,6 +7,7 @@ module Types
     field :create_pass, mutation: Mutations::CreatePass
     field :update_pass, mutation: Mutations::UpdatePass
     field :delete_pass, mutation: Mutations::DeletePass
+    field :acquire_pass, mutation: Mutations::AcquirePass
 
     field :test_field, String, null: false,
       description: "An example field added by the generator"
