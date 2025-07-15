@@ -30,7 +30,7 @@ RSpec.describe "SignIn", type: :request do
         email: "newcust@demo.com",
         password: "password1234",
         role: "client"
-      }.to_json,
+      },
       headers: {
         "Content-Type" => "application/json"
       }

@@ -12,8 +12,15 @@ class GraphqlController < ApplicationController
     query = params[:query]
     operation_name = params[:operationName]
 
+    user = current_user_from_token
+
+    unless public_operation?(query) || user
+      render json: { errors: [ { message: "Not Authorized" } ] }, status: :unauthorized, content_type: "application/json"
+      return
+    end
+
     context = {
-      current_user: current_user_from_token
+      current_user: user
     }
 
     result = MembersApiSchema.execute(
@@ -23,10 +30,12 @@ class GraphqlController < ApplicationController
       operation_name: operation_name
     )
 
+    response.content_type = "application/json"
     render json: result
-  rescue StandardError => e
-    raise e unless Rails.env.development?
-    handle_error_in_development(e)
+  rescue JSON::ParserError => e
+    render json: { errors: [ { message: "invalid JSON #{e.messge}" } ] }, status: 400
+  rescue => e
+    render json: { errors: [ { message: e.message } ] }, status: 500
   end
 
   private
@@ -47,10 +56,13 @@ class GraphqlController < ApplicationController
     head :unauthorized unless current_user_from_token
   end
 
-  def public_operation?
-  query_string = request.request_parameters["query"].to_s
-  Rails.logger.debug("Query received: #{query_string}")
-  query_string.match?(/mutation\s+(SignIn|SignUp)/i)
+  def public_operation?(query_string = nil)
+  query_string ||= begin
+    query_string ||= request.request_parameters["query"] || params[:query]
+    query_string.to_s.match?(/mutation\s+(SignIn|SignUp)/i)
+  end
+    # Rails.logger.debug("Query received: #{query_string}")
+    # !!query_string.match?(/mutation\s+(SignIn|SignUp)/i)
     # Rails.logger.debug "PARAMS: #{params.to_unsafe_h.inspect}"
     # query_string = params[:query] || params.dig(:params, :query) || ""
     # query_string.match?(/mutation\s+(SignIn|SignUp)/i)

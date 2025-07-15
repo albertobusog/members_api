@@ -28,7 +28,7 @@ RSpec.describe "AcquirePass", type: :request do
           variables: { passId: pass.id }
     }.to_json,
     headers: auth_headers(client)
-    puts response.body
+    # puts response.body
     json = JSON.parse(response.body)
     data = json["data"]["acquirePass"]
 
@@ -36,6 +36,22 @@ RSpec.describe "AcquirePass", type: :request do
     expect(data["purchase"]["remainingVisits"]).to eq(pass.visits)
     expect(data["purchase"]["remainingTime"]).to be > 0
     expect(data["purchase"]["purchaseDate"]).to eq(Date.today.to_s)
+    end
+
+    it "return not authorized if user is not authenticated" do
+      post "/graphql",
+        params: {
+        query: mutation,
+        variables: { passId: pass.id }
+      }.to_json,
+      headers: { "Content-Type" => "application/json" }
+      expect(response.media_type).to eq("application/json")
+      # puts response.body unless response.media_type == "application/json"
+      json = JSON.parse(response.body)
+      data = json["data"]["acquirePass"]
+
+      expect(data["purchase"]).to be_nil
+      expect(data["errors"]).to include("Not authorized")
     end
   end
 end
