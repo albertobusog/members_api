@@ -73,4 +73,19 @@ RSpec.describe "AcquirePass", type: :request do
     expect(data["errors"]).to include("Not authorized")
     end
   end
+
+  it "return error if pass does not exist" do
+        post "/graphql",
+          params: {
+            query: mutation,
+            variables: { passId: -999 }
+          }.to_json,
+          headers: auth_headers(client)
+
+          json = JSON.parse(response.body)
+          data = json["data"]["acquirePass"]
+
+          expect(data["purchase"]).to be_nil
+          expect(data["errors"]).to include("Pass not found")
+  end  
 end
