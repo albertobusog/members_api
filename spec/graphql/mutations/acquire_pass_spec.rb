@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe "AcquirePass", type: :request do
   let(:client) { create(:user, role: "client") }
+  let (:admin) { create(:user, role: "client") }
   let(:pass) { create(:pass, visits: 10, price: 100.0, expires_at: 1.month.from_now) }
 
   let(:mutation) do
@@ -39,6 +40,7 @@ RSpec.describe "AcquirePass", type: :request do
     end
 
     it "return not authorized if user is not authenticated" do
+      
       post "/graphql",
         params: {
         query: mutation,
@@ -52,6 +54,23 @@ RSpec.describe "AcquirePass", type: :request do
 
       expect(data["purchase"]).to be_nil
       expect(data["errors"]).to include("Not authorized")
+    end
+
+    it "returns not authorized if admin tries to acquire a pass" do
+      admin = create(:user, role: "admin")
+      post "/graphql",
+        params: {
+          query: mutation,
+          variables: { passId: pass.id }
+    }.to_json,
+    headers: auth_headers(admin)
+
+    expect(response).to have_http_status(:ok)
+    json = JSON.parse(response.body)
+    data = json["data"]["acquirePass"]
+
+    expect(data["purchase"]).to be_nil
+    expect(data["errors"]).to include("Not authorized")
     end
   end
 end
