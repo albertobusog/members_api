@@ -12,6 +12,10 @@ module Mutations
       pass = Pass.find_by(id: pass_id)
       return { purchase: nil, errors: [ "Pass not found" ] } unless pass
 
+      if Purchase.exists?(user: user, pass: pass)
+        return { purchase: nil, errors: [ "Pass already acquired" ] }
+      end
+
       purchase = Purchase.new(
         user: user,
         pass: pass,

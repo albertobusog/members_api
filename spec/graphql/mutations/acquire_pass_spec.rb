@@ -40,7 +40,6 @@ RSpec.describe "AcquirePass", type: :request do
     end
 
     it "return not authorized if user is not authenticated" do
-      
       post "/graphql",
         params: {
         query: mutation,
@@ -87,5 +86,31 @@ RSpec.describe "AcquirePass", type: :request do
 
           expect(data["purchase"]).to be_nil
           expect(data["errors"]).to include("Pass not found")
-  end  
+  end
+
+  it "does not allow client to acquire the smae pass twice" do
+    Purchase.create!(
+      user: client,
+      pass: pass,
+      remaining_visits: pass.visits,
+      remaining_time: 30,
+      purchase_date: Date.today,
+      price: pass.price
+    )
+
+    post "/graphql",
+      params: {
+        query: mutation,
+        variables: { passId: pass.id }
+      }.to_json,
+      headers: auth_headers(client)
+
+      puts "RESPONSE STATUS: #{response.status}"
+      puts "RESPONSE BODY: #{response.body}"
+      json = JSON.parse(response.body)
+      data = json["data"]["acquirePass"]
+
+      expect(data["purchase"]).to be_nil
+      expect(data["errors"]).to include("Pass already acquired")
+  end
 end
