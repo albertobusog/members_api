@@ -31,7 +31,12 @@ module Types
     field :availablePasses, [ Types::PassType ], null: false
 
     def availablePasses
-      Pass.all
+      user = context[:current_user]
+      raise GraphQL::ExecutionError, "Not authorized " unless user&.role == "client"
+
+      acquired_pass_ids = user.purchases.select(:pass_id)
+
+      Pass.where.not(id: acquired_pass_ids).order(price: :asc)
     end
 
     field :passes, [ Types::PassType ], null: false,

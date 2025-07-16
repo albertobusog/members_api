@@ -31,4 +31,15 @@ RSpec.describe "AvailablePasses", type: :request do
         expect(data.map { |p| p["name"] }).to contain_exactly("Gym", "Yoga")
     end
   end
+
+  it "returns passes ordered by price ascending" do
+    post "/graphql",
+      params: { query: query }.to_json,
+      headers: auth_headers(client)
+      # puts "RESPONSE BODY: #{response.body}"
+      json = JSON.parse(response.body)
+      data = json["data"]["availablePasses"]
+
+      expect(data.map { |p| p["price"] }).to eq(data.map { |p| p["price"] }.sort)
+  end
 end
