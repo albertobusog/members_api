@@ -28,15 +28,23 @@ module Types
     end
     # Add root-level fields here.
     # They will be entry points for queries on your schema.
-    field :availablePasses, [ Types::PassType ], null: false
+    field :availablePasses, [ Types::PassType ], null: false do
+      argument :name_contains, String, required: false
+      argument :min_price, Float, required: false
+      argument :max_price, Float, required: false
+    end
 
-    def availablePasses
+    def availablePasses(name_contains: nil, min_price: nil, max_price: nil)
       user = context[:current_user]
       raise GraphQL::ExecutionError, "Not authorized " unless user&.role == "client"
 
       acquired_pass_ids = user.purchases.select(:pass_id)
+      passes = Pass.where.not(id: acquired_pass_ids)
+      passes = passes.where("LOWER(name) LIKE ?", "%#{name_contains}%") if name_contains.present?
+      passes = passes.where("price >= ?", min_price) if min_price.present?
+      passes = passes.where("price <= ?", max_price) if max_price.present?
 
-      Pass.where.not(id: acquired_pass_ids).order(price: :asc)
+      passes.order(price: :asc)
     end
 
     field :passes, [ Types::PassType ], null: false,
