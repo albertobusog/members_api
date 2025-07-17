@@ -42,4 +42,17 @@ RSpec.describe "AvailablePasses", type: :request do
 
       expect(data.map { |p| p["price"] }).to eq(data.map { |p| p["price"] }.sort)
   end
+
+  it "exclude passes already acquired by the client" do
+    create(:purchase, user: client, pass: pass1)
+    post "/graphql",
+      params: { query: query }.to_json,
+      headers: auth_headers(client)
+
+    json = JSON.parse(response.body)
+    data = json["data"]["availablePasses"]
+
+    expect(data.count).to eq(1)
+    expect(data.first["name"]).to eq("Yoga")
+  end
 end
