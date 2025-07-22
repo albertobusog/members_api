@@ -17,11 +17,6 @@ module Mutations
       pass = Pass.new(name: name, visits: visits, expires_at: expires_at, price: price, user: user)
 
       pass.save ? { pass: pass } : { errors: pass.errors.full_messages }
-      # if pass.save
-      #  { pass: pass, errors: [] }
-      # else
-      #  { pass: nil, errors: pass.errors.full_messages }
-      # end
     end
   end
 end

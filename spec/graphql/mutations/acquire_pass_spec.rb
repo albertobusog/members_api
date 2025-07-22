@@ -105,8 +105,6 @@ RSpec.describe "AcquirePass", type: :request do
       }.to_json,
       headers: auth_headers(client)
 
-      # puts "RESPONSE STATUS: #{response.status}"
-      # puts "RESPONSE BODY: #{response.body}"
       json = JSON.parse(response.body)
       data = json["data"]["acquirePass"]
 
