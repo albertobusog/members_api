@@ -3,7 +3,7 @@ module Mutations
     argument :name, String, required: true
     argument :visits, Integer, required: true
     argument :expires_at, GraphQL::Types::ISO8601Date, required: true
-    argument :price, Float, required: false
+    argument :price, Float, required: true
 
     field :pass, Types::PassType, null: true
     field :errors, [ String ], null: true
