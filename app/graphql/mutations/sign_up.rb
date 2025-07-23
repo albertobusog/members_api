@@ -12,20 +12,17 @@ module Mutations
 
     def resolve (email:, password:, role:)
       user = User.new(email: email, password: password, role: role)
-      if user.save
-        token = Warden::JWTAuth::UserEncoder.new.call(user, :user, nil).first
+      user.save ?
         {
           user: user,
-          token: token,
-          errors: []
-        }
-      else
+          token: Warden::JWTAuth::UserEncoder.new.call(user, :user, nil).first,
+          errors: nil
+        } :
         {
           user: nil,
           token: nil,
           errors: user.errors.full_messages
         }
-      end
     end
   end
 end

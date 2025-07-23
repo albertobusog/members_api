@@ -10,15 +10,11 @@ module Mutations
     field :errors, [ String ], null: false
 
     def resolve(id:, name:, visits:, expires_at:, price:)
-      user = context[:current_user]
-      return { pass: nil, errors: [ "Not authorized" ] } unless user&.admin?
+      return { pass: nil, errors: [ "Not authorized" ] } unless context[:current_user]&.admin?
 
       pass = Pass.find_by(id: id)
       return { pass: nil, errors: [ "Pass not found" ] } unless pass
-
-      if pass.purchases.where("remaining_visits > 0").exists?
-        return { pass: nil, errors: [ "Cannot edit pass with clients having pending visits" ] }
-      end
+      return { pass: nil, errors: [ "Cannot edit pass with clients having pending visits" ] } if pass.purchases.where("remaining_visits > 0").exists?
 
       pass.update(name: name, visits: visits, expires_at: expires_at, price: price) ?
       { pass: pass, errors: [] } :

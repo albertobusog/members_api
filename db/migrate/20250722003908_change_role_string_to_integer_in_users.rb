@@ -1,5 +1,5 @@
 class ChangeRoleStringToIntegerInUsers < ActiveRecord::Migration[8.0]
-    def up 
+    def up
       User.where(role: "client").update_all(role: 0)
       User.where(role: "admin").update_all(role: 1)
     end
