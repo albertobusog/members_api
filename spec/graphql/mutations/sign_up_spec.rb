@@ -38,6 +38,6 @@ RSpec.describe "SignUp", type: :request do
 
     expect(data["user"]["email"]).to eq("newcust@demo.com")
     expect(data["user"]["role"]).to eq("client")
-    expect(data["errors"]).to be_empty
+    expect(data["errors"]).to be_nil
   end
 end

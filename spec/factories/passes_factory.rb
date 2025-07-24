@@ -4,5 +4,6 @@ FactoryBot.define do
     visits { 10 }
     expires_at { 1.month.from_now }
     association :user
+    price { 100.1 }
   end
 end

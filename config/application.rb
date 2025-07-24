@@ -18,21 +18,7 @@ module MembersApi
       current_dataloader_source: -> { GraphQL::Current.dataloader_source_class }
     ]
     # Initialize configuration defaults for originally generated Rails version.
-    config.after_initialize do
-      begin
-        Rails.application.config.eager_load_paths.unshift("X")
-      rescue => e
-        puts e.backtrace
-      end
-    end
     config.load_defaults 8.0
-    config.add_autoload_paths_to_load_path = false
-    config.autoload_paths += Dir[Rails.root.join("lib")]
-    config.eager_load_paths += Dir[Rails.root.join("lib")]
-    config.paths.add "lib", eager_load: true
-    config.before_initialize do
-      config.eager_load_paths += Dir[Rails.root.join("lib")]
-    end
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.

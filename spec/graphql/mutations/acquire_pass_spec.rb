@@ -12,7 +12,7 @@ RSpec.describe "AcquirePass", type: :request do
           purchase {
             id
             remainingVisits
-            remainingTime
+            validUntil
             purchaseDate
           }
           errors
@@ -29,13 +29,13 @@ RSpec.describe "AcquirePass", type: :request do
           variables: { passId: pass.id }
     }.to_json,
     headers: auth_headers(client)
-    # puts response.body
+
     json = JSON.parse(response.body)
     data = json["data"]["acquirePass"]
 
-    expect(data["errors"]).to be_empty
+    expect(data["errors"]).to be_nil
     expect(data["purchase"]["remainingVisits"]).to eq(pass.visits)
-    expect(data["purchase"]["remainingTime"]).to be > 0
+    expect(Date.parse(data["purchase"]["validUntil"])).to be > Date.today
     expect(data["purchase"]["purchaseDate"]).to eq(Date.today.to_s)
     end
 
@@ -47,7 +47,7 @@ RSpec.describe "AcquirePass", type: :request do
       }.to_json,
       headers: { "Content-Type" => "application/json" }
       expect(response.media_type).to eq("application/json")
-      # puts response.body unless response.media_type == "application/json"
+
       json = JSON.parse(response.body)
       data = json["data"]["acquirePass"]
 
@@ -71,6 +71,32 @@ RSpec.describe "AcquirePass", type: :request do
     expect(data["purchase"]).to be_nil
     expect(data["errors"]).to include("Not authorized")
     end
+
+    it "does not allow acquiring a pass if its inactive" do
+      client = create(:user, role: :client)
+
+      expired_pass = create(:pass, visits: 5, expires_at: Date.yesterday)
+
+
+        post "/graphql",
+          params: {
+            query: <<~GQL
+              mutation {
+                acquirePass(input: { passId: #{expired_pass.id} }) {
+                  purchase { id }
+                  errors
+                }
+              }
+            GQL
+          }.to_json,
+          headers: auth_headers(client)
+
+        json = JSON.parse(response.body)
+        data = json["data"]["acquirePass"]
+
+        expect(data["purchase"]).to be_nil
+        expect(data["errors"]).to include("Pass is not active")
+    end
   end
 
   it "return error if pass does not exist" do
@@ -93,7 +119,7 @@ RSpec.describe "AcquirePass", type: :request do
       user: client,
       pass: pass,
       remaining_visits: pass.visits,
-      remaining_time: 30,
+      valid_until: 30.days.from_now.to_date,
       purchase_date: Date.today,
       price: pass.price
     )
@@ -105,8 +131,6 @@ RSpec.describe "AcquirePass", type: :request do
       }.to_json,
       headers: auth_headers(client)
 
-      # puts "RESPONSE STATUS: #{response.status}"
-      # puts "RESPONSE BODY: #{response.body}"
       json = JSON.parse(response.body)
       data = json["data"]["acquirePass"]
 

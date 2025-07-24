@@ -4,7 +4,7 @@ RSpec.describe "DeletePass", type: :request do
   let(:admin) { create(:user, role: "admin") }
   let(:client) { create(:user, role: "client") }
   let!(:pass) { create(:pass, name: "To Delete", user: admin) }
-  # let!(:pass) { create(:pass, name: "To Delete", user: client) }
+
 
   let(:mutation) do
     <<-GQL
@@ -30,12 +30,12 @@ RSpec.describe "DeletePass", type: :request do
       data = json["data"]["deletePass"]
 
       expect(data["success"]).to eq(true)
-      expect(data["errors"]).to be_empty
+      expect(data["errors"]).to be_nil
       expect(Pass.find_by(id: pass.id)).to be_nil
     end
 
     it "fails if pass has clients with pending visits" do
-      create(:purchase, pass: pass, user: client, remaining_visits: 3, purchase_date: Date.today, remaining_time: 10)
+      create(:purchase, pass: pass, user: client)
 
       post "/graphql",
          params: {

@@ -11,19 +11,12 @@ module Mutations
 
     def resolve (email:, password:)
       user = User.find_for_authentication(email: email)
-      unless user&.valid_password?(password)
-        return {
-          user: nil,
-          token: nil,
-          errors: [ "Invalid credentials" ]
-          }
-      end
 
-      token = Warden::JWTAuth::UserEncoder.new.call(user, :user, nil).first
+      return { user: nil, token: nil, errors: [ "Invalid credentials" ] } unless user&.valid_password?(password)
 
       {
         user: user,
-        token: token,
+        token: Warden::JWTAuth::UserEncoder.new.call(user, :user, nil).first,
         errors: []
       }
     end

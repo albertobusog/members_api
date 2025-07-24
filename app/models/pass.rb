@@ -5,4 +5,8 @@ class Pass < ApplicationRecord
   validates :name, presence: true
   validates :visits, numericality: { greater_than: 0 }
   validates :expires_at, presence: true
+
+  def active?
+    expires_at.present? && expires_at > Date.today
+  end
 end

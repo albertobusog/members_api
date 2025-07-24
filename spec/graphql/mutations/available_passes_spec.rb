@@ -44,7 +44,7 @@ RSpec.describe "AvailablePasses", type: :request do
           GQL
         }.to_json,
         headers: auth_headers(client)
-      # puts "RESPONSE BODY: #{response.body}"
+
       json = JSON.parse(response.body)
       names = json["data"]["availablePasses"].map { |p| p["name"] }
 
@@ -98,7 +98,7 @@ RSpec.describe "AvailablePasses", type: :request do
     post "/graphql",
       params: { query: query }.to_json,
       headers: auth_headers(client)
-      # puts "RESPONSE BODY: #{response.body}"
+
       json = JSON.parse(response.body)
       data = json["data"]["availablePasses"]
 
