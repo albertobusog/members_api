@@ -24,9 +24,9 @@ RSpec.describe Purchase, type: :model do
     expect(purchase.errors[:purchase_date]).to include("can't be blank")
   end
 
-  it "is invalid if remaining_time is negative" do
-    purchase = build(:purchase, remaining_time: -5)
+  it "is invalid if valid_until is in the past" do
+    purchase = build(:purchase, valid_until: 2.days.ago)
     expect(purchase).to be_invalid
-    expect(purchase.errors[:remaining_time]).to include("must be greater than or equal to 0")
+    expect(purchase.errors[:valid_until]).to include("must be a future date")
   end
 end

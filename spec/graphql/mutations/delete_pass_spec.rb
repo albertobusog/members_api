@@ -25,7 +25,7 @@ RSpec.describe "DeletePass", type: :request do
           variables: { id: pass.id }
         }.to_json,
         headers: auth_headers(admin)
-      
+
       json = JSON.parse(response.body)
       data = json["data"]["deletePass"]
 

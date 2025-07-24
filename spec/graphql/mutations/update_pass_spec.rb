@@ -1,7 +1,6 @@
 require "rails_helper"
 
 RSpec.describe "UpdatePass", type: :request do
-
   let(:mutation) do
     <<~GQL
       mutation($id: ID!, $name: String!, $visits: Int!, $expiresAt: ISO8601Date!, $price: Float!) {
@@ -22,7 +21,7 @@ RSpec.describe "UpdatePass", type: :request do
   context "when admin updates pass" do
     it "updates successfully when no clients have pending visits" do
       admin = create(:user, role: :admin)
-      pass = create(:pass,user: admin)
+      pass = create(:pass, user: admin)
 
       post "/graphql",
            params: {
@@ -68,7 +67,7 @@ RSpec.describe "UpdatePass", type: :request do
       admin = create(:user, role: :admin)
       client = create(:user, role: :client)
       pass = create(:pass, user: admin)
-      create(:purchase, pass: pass, user: client, remaining_time: 5, purchase_date: Date.today)
+      create(:purchase, pass: pass, user: client, valid_until: 1.month.from_now, purchase_date: Date.today)
 
       post "/graphql",
         params: {
@@ -92,7 +91,7 @@ RSpec.describe "UpdatePass", type: :request do
     it "fails when update is invalid (e.g. negative visits)" do
       admin = create(:user, role: :admin)
       pass = create(:pass, user: admin)
-    
+
       post "/graphql",
         params: {
           query: mutation,
@@ -176,7 +175,6 @@ RSpec.describe "UpdatePass", type: :request do
   end
 
   context "when client tries to update pass" do
-    
     it "returns not authorized" do
       client = create(:user, role: :client)
       pass = create(:pass)
