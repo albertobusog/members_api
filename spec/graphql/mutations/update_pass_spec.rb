@@ -1,9 +1,6 @@
 require "rails_helper"
 
 RSpec.describe "UpdatePass", type: :request do
-  let(:admin) { create(:user, role: "admin") }
-  let(:client) { create(:user, role: "client") }
-  let(:pass) { create(:pass, name: "Original", visits: 10, expires_at: 1.month.from_now, price: 123.45, user: admin) }
 
   let(:mutation) do
     <<~GQL
@@ -24,6 +21,9 @@ RSpec.describe "UpdatePass", type: :request do
 
   context "when admin updates pass" do
     it "updates successfully when no clients have pending visits" do
+      admin = create(:user, role: :admin)
+      pass = create(:pass,user: admin)
+
       post "/graphql",
            params: {
              query: mutation,
@@ -44,6 +44,7 @@ RSpec.describe "UpdatePass", type: :request do
     end
 
     it "fails if pass does not exist" do
+      admin = create(:user, role: :admin)
       post "/graphql",
            params: {
              query: mutation,
@@ -64,6 +65,9 @@ RSpec.describe "UpdatePass", type: :request do
     end
 
     it "fails when pass has clients with pending visits" do
+      admin = create(:user, role: :admin)
+      client = create(:user, role: :client)
+      pass = create(:pass, user: admin)
       create(:purchase, pass: pass, user: client, remaining_time: 5, purchase_date: Date.today)
 
       post "/graphql",
@@ -86,6 +90,9 @@ RSpec.describe "UpdatePass", type: :request do
     end
 
     it "fails when update is invalid (e.g. negative visits)" do
+      admin = create(:user, role: :admin)
+      pass = create(:pass, user: admin)
+    
       post "/graphql",
         params: {
           query: mutation,
@@ -139,6 +146,8 @@ RSpec.describe "UpdatePass", type: :request do
     end
 
     it "fails when no fields are provided (only id)" do
+      admin = create(:user, role: :admin)
+      pass = create(:pass, user: admin)
       post "/graphql",
         params: {
           query: <<~GQL
@@ -167,7 +176,10 @@ RSpec.describe "UpdatePass", type: :request do
   end
 
   context "when client tries to update pass" do
+    
     it "returns not authorized" do
+      client = create(:user, role: :client)
+      pass = create(:pass)
       post "/graphql",
            params: {
              query: mutation,
