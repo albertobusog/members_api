@@ -3,7 +3,7 @@ module Mutations
     argument :pass_id, ID, required: true
 
     field :purchase, Types::PurchaseType, null: true
-    field :errors, [ String ], null: false
+    field :errors, [ String ], null: true
 
     def resolve(pass_id:)
       return { purchase: nil, errors: [ "Not authorized" ] } unless context[:current_user]&.client?
@@ -21,7 +21,7 @@ module Mutations
         price: pass.price
       )
 
-      purchase.save ? { purchase: purchase, errors: [] } : { purchase: nil, errors: purchase.errors.full_messages }
+      purchase.save ? { purchase: purchase, errors: nil } : { purchase: nil, errors: purchase.errors.full_messages }
     end
   end
 end

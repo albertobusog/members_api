@@ -25,12 +25,12 @@ RSpec.describe "DeletePass", type: :request do
           variables: { id: pass.id }
         }.to_json,
         headers: auth_headers(admin)
-
+      
       json = JSON.parse(response.body)
       data = json["data"]["deletePass"]
 
       expect(data["success"]).to eq(true)
-      expect(data["errors"]).to be_empty
+      expect(data["errors"]).to be_nil
       expect(Pass.find_by(id: pass.id)).to be_nil
     end
 
