@@ -8,6 +8,7 @@ module Types
     field :update_pass, mutation: Mutations::UpdatePass
     field :delete_pass, mutation: Mutations::DeletePass
     field :acquire_pass, mutation: Mutations::AcquirePass
+    field :register_attendance, mutation: Mutations::RegisterAttendance
 
     field :test_field, String, null: false,
       description: "An example field added by the generator"
