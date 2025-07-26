@@ -16,17 +16,20 @@ RSpec.describe "RegisterAttendance", type: :request do
     GQL
   end
 
-  context "when a client register a visit" do
-    it "successfully register a visit and reduce remaining visits" do
+  def execute_register_attendance(purchase_id:, headers:)
     post "/graphql",
       params: {
         query: mutation,
         variables: { purchaseId: purchase.id }
       }.to_json,
-      headers: auth_headers(client)
+      headers: headers
 
-      json = JSON.parse(response.body)
-      data = json["data"]["registerAttendance"]
+      JSON.parse(response.body)["data"]["registerAttendance"]
+  end
+
+  context "when a client register a visit" do
+    it "successfully register a visit and reduce remaining visits" do
+    data = execute_register_attendance(purchase_id: purchase.id, headers: auth_headers(client))
 
       expect(data["success"]).to eq(true)
       expect(data["errors"]).to be_nil
@@ -34,16 +37,8 @@ RSpec.describe "RegisterAttendance", type: :request do
     end
 
     it "fails when user its not authenticated" do
-      post "/graphql",
-        params: {
-          query: mutation,
-          variables: { purchaseId: purchase.id }
-      }.to_json,
-      headers: { "Content-Type" => "application/json" }
-
-      json = JSON.parse(response.body)
-      data = json["data"]["registerAttendance"]
-
+      data = execute_register_attendance(purchase_id: purchase.id, headers: {"Content-Type" => "application/json"})
+     
       expect(data["success"]).to be false
       expect(data["errors"]). to include ("Not authorized")
     end
@@ -51,12 +46,7 @@ RSpec.describe "RegisterAttendance", type: :request do
     it "fails if user is not the owner of the purchase" do
       another_client = create(:user, role: :client)
 
-      post "/graphql",
-        params: {
-          query: mutation,
-          variables: { purchaseId: purchase.id }
-      }.to_json,
-      headers: auth_headers(another_client)
+      data = execute_register_attendance(purchase_id: purchase.id, headers: auth_headers(another_client))
 
       json = JSON.parse(response.body)
       data = json["data"]["registerAttendance"]
@@ -67,13 +57,7 @@ RSpec.describe "RegisterAttendance", type: :request do
 
     it "fails if purchase has no remaining visits" do
       purchase.update!(remaining_visits: 0)
-
-      post "/graphql",
-        params: {
-          query: mutation,
-          variables: { purchaseId: purchase.id }
-      }.to_json,
-      headers: auth_headers(client)
+      data = execute_register_attendance(purchase_id: purchase.id, headers: auth_headers(client))
 
       json = JSON.parse(response.body)
       data = json["data"]["registerAttendance"]
