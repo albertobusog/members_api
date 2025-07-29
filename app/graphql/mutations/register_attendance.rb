@@ -15,10 +15,6 @@ module Mutations
       return { success: false, errors: [ "No remaining visits" ] } if purchase.remaining_visits <= 0
 
 
-      # purchase.save ?
-      # { purchase: purchase, errors: nil } :
-      # { purchase: nil, errors: purchase.errors.full_messages }
-
       purchase.update(remaining_visits: purchase.remaining_visits - 1) ?
         { purchase: purchase, success: true, errors: nil } :
         { success: false, errors: purchase.errors.full_messages }
