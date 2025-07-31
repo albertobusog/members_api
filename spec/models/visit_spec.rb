@@ -6,6 +6,6 @@ RSpec.describe Visit, type: :model do
   end
 
   describe "validations" do
-    it { should allow_value([true, false]).for(:attended) }
+    it { should allow_value([ true, false ]).for(:attended) }
   end
 end
