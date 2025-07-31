@@ -59,5 +59,7 @@ module Types
     def test_field
       "Hello World!"
     end
+
+    field :attendance_history, resolver: Queries::AttendanceHistory
   end
 end

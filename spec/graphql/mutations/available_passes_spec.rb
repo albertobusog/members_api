@@ -23,7 +23,7 @@ RSpec.describe "AvailablePasses", type: :request do
       post "/graphql",
         params: { query: query }.to_json,
         headers: auth_headers(client)
-        # puts "RESPONSE BODY: #{response.body}"
+
         json = JSON.parse(response.body)
         data = json["data"]["availablePasses"]
 
