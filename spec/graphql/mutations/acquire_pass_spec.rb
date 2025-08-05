@@ -46,6 +46,7 @@ RSpec.describe "AcquirePass", type: :request do
         variables: { passId: pass.id }
       }.to_json,
       headers: { "Content-Type" => "application/json" }
+      puts response.body
       expect(response.media_type).to eq("application/json")
 
       json = JSON.parse(response.body)

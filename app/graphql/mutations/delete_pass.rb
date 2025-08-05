@@ -6,7 +6,7 @@ module Mutations
     field :errors, [ String ], null: true
 
     def resolve(id:)
-      return { success: false, errors: [ "Not authorized" ] } unless context[:current_user]&.admin?
+      return { success: false, errors: [ "Not authorized" ] } unless context[:current_user].admin?
 
       pass = Pass.find_by(id: id)
       return { success: false, errors: [ "Pass not found" ] } unless pass

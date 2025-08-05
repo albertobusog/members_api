@@ -9,7 +9,7 @@ module Mutations
     field :errors, [ String ], null: true
 
     def resolve(name:, visits:, expires_at:, price:)
-      return { pass: nil, errors: [ "Not authorized" ] } unless context[:current_user]&.admin?
+      return { pass: nil, errors: [ "Not authorized" ] } unless context[:current_user].admin?
 
       pass = Pass.new(name: name, visits: visits, expires_at: expires_at, price: price, user: context[:current_user])
 

@@ -12,7 +12,7 @@ module Mutations
     def resolve (email:, password:)
       user = User.find_for_authentication(email: email)
 
-      return { user: nil, token: nil, errors: [ "Invalid credentials" ] } unless user&.valid_password?(password)
+      return { user: nil, token: nil, errors: [ "Invalid credentials" ] } unless user.valid_password?(password)
 
       {
         user: user,
