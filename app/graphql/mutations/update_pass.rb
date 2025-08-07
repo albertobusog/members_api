@@ -15,7 +15,7 @@ module Mutations
       pass = Pass.find_by(id: id)
       return { pass: nil, errors: [ "Pass not found" ] } unless pass
       return { pass: nil, errors: [ "Cannot edit pass with clients having pending visits" ] } if pass.purchases.where("remaining_visits > 0").exists?
-      atributes = { 
+      atributes = {
         name: name,
         visits: visits,
         expires_at: expires_at,

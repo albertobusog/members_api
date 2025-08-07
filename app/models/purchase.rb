@@ -9,6 +9,5 @@ class Purchase < ApplicationRecord
   validates :remaining_visits, numericality: { greater_than_or_equal_to: 0 }
   validates :price, numericality: { greater_than_or_equal_to: 0 }
   validates :purchase_date, presence: true
-  validates :valid_until, presence: true, comparison: { greater_than_or_equal_to: Date.today, message: "must be a future date"}
-  
+  validates :valid_until, presence: true, comparison: { greater_than_or_equal_to: Date.today, message: "must be a future date" }
 end

@@ -30,7 +30,7 @@ RSpec.describe "AcquirePass", type: :request do
 
     body["data"] && body["data"]["acquirePass"] ?
       body["data"]["acquirePass"] :
-      { 
+      {
         "purchase" => nil,
         "errors" => Array(body.dig("errors")&.map { |e| e["message"] })
       }
@@ -48,7 +48,7 @@ RSpec.describe "AcquirePass", type: :request do
     end
 
     it "return not authorized if user is not authenticated" do
-      data = acquire(pass.id, { "Content-Type" => "application/json"})
+      data = acquire(pass.id, { "Content-Type" => "application/json" })
       expect(data["purchase"]).to be_nil
       expect(data["errors"]).to include("Not authorized")
     end
@@ -68,13 +68,13 @@ RSpec.describe "AcquirePass", type: :request do
   end
 
   it "return error if pass does not exist" do
-    data = acquire(-999, auth_headers(client))   
+    data = acquire(-999, auth_headers(client))
     expect(data["purchase"]).to be_nil
     expect(data["errors"]).to include("Pass not found")
   end
 
 context "when validating already acquired passes" do
-    it "returns error if the client already has an active pass with visits" do 
+    it "returns error if the client already has an active pass with visits" do
       create(:purchase,
         user: client,
         pass: pass,
@@ -87,7 +87,7 @@ context "when validating already acquired passes" do
       expect(data["errors"]).to include("Pass already acquired")
     end
 
-    it "allows purchase if previous pass is expired" do 
+    it "allows purchase if previous pass is expired" do
       Purchase.new(
         user: client,
         pass: pass,
@@ -102,7 +102,7 @@ context "when validating already acquired passes" do
       expect(data["purchase"]).not_to be_nil
     end
 
-    it "allows purchase if previous pass has no remaining visits" do 
+    it "allows purchase if previous pass has no remaining visits" do
       create(:purchase,
         user: client,
         pass: pass,

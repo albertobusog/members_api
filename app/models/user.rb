@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :purchases
   has_many :passes, through: :purchases
 
-  def active_purchase 
+  def active_purchase
     purchases
       .where("valid_until >= ?", Date.today)
       .where("remaining_visits > 0")

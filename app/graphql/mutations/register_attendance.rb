@@ -1,6 +1,5 @@
 module Mutations
   class RegisterAttendance < BaseMutation
-
     field :purchase, Types::PurchaseType, null: true
     field :success, Boolean, null: false
     field :errors, [ String ], null: true
