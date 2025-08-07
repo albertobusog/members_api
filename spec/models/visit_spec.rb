@@ -5,7 +5,5 @@ RSpec.describe Visit, type: :model do
     it { should belong_to(:purchase) }
   end
 
-  describe "validations" do
-    it { should allow_value([ true, false ]).for(:attended) }
-  end
+ 
 end

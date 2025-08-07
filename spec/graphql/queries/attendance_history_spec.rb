@@ -8,7 +8,7 @@ RSpec.describe "AttendanceHistory", type: :request do
   let(:purchase) { create(:purchase, user: client, pass: pass, remaining_visits: 5) }
 
   before do
-    create_list(:visit, 3, purchase: purchase, attended: true)
+    create_list(:visit, 3, purchase: purchase)
   end
 
   let(:query) do
@@ -16,7 +16,6 @@ RSpec.describe "AttendanceHistory", type: :request do
       query($userId: ID) {
         attendanceHistory(userId: $userId) {
           id
-          attended
           purchase {
             id
           }

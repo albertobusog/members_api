@@ -17,7 +17,7 @@ module Queries
       return raise GraphQL::ExecutionError, "User not found" unless target_user
 
       Visit.joins(:purchase)
-           .where(purchases: { user_id: target_user.id }, attended: true)
+           .where(purchases: { user_id: target_user.id })
     end
   end
 end

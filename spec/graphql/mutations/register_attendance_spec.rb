@@ -24,7 +24,6 @@ RSpec.describe "RegisterAttendance", type: :request do
         query: mutation
       }.to_json,
       headers: headers
-      
       JSON.parse(response.body)["data"]["registerAttendance"]
   end
 
