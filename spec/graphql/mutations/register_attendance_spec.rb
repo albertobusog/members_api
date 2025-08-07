@@ -38,7 +38,7 @@ RSpec.describe "RegisterAttendance", type: :request do
 
     it "fails when user its not authenticated" do
       data = execute_register_attendance(purchase_id: purchase.id, headers: { "Content-Type" => "application/json" })
-      puts response.body
+      
       expect(data["success"]).to be false
       expect(data["errors"]). to include ("Not authorized")
     end

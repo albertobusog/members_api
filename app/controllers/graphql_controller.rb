@@ -15,11 +15,7 @@ class GraphqlController < ApplicationController
     user = current_user_from_token
 
     unless public_operation?(query) || user
-      op_name = extract_operation_name(query)
-      render json: {
-        "data" => op_name ? {op_name => nil } : {}, 
-        "errors" => [ { message: "Not Authorized" } ]
-      }, status: :ok, content_type: "application/json"
+      render json: { errors: [ { message: "Not Authorized" } ] }, status: :unauthorized, content_type: "application/json"
       return
     end
 
@@ -43,12 +39,6 @@ class GraphqlController < ApplicationController
   end
 
   private
-
-  def extract_operation_name(query)
-    return nil if query.blank?
-    match = query.match(/\b(?:mutation|query)\b[^{]\{\s(\w+)/i)
-    match ? match[1] : nil
-  end
 
   def current_user_from_token
     token = request.headers["Authorization"]&.split(" ")&.last
