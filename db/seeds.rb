@@ -13,7 +13,6 @@ Purchase.delete_all
 Pass.delete_all
 User.delete_all
 
-# Create user
 admin = User.create!(
   email: "admin@example.com",
   password: "password",
@@ -32,8 +31,15 @@ client_no_purchases = User.create!(
   role: :client
 )
 
-# Create pass
-pass1 = Pass.create!(
+
+client_used_up = User.create!(
+  email: "client_usedup@example.com",
+  password: "password",
+  role: :client
+)
+
+
+pass_yoga = Pass.create!(
   name: "Yoga Basic",
   visits: 5,
   expires_at: Date.today + 30,
@@ -41,7 +47,7 @@ pass1 = Pass.create!(
   user_id: admin.id
 )
 
-pass2 = Pass.create!(
+pass_crossfit = Pass.create!(
   name: "Crossfit Pro",
   visits: 8,
   expires_at: Date.today + 45,
@@ -49,27 +55,37 @@ pass2 = Pass.create!(
   user_id: admin.id
 )
 
-# Create purchase (acc pass)
-purchase1 = Purchase.create!(
+pass_pilates = Pass.create!(
+  name: "Pilates 3",
+  visits: 3,
+  expires_at: Date.today + 20,
+  price: 90.00,
+  user_id: admin.id
+)
+
+purchase_client = Purchase.create!(
   user_id: client.id,
-  pass_id: pass1.id,
-  remaining_visits: 5,
+  pass_id: pass_yoga.id,
+  remaining_visits: 3,
   purchase_date: Time.current,
-  price: pass1.price,
+  price: pass_yoga.price,
   valid_until: Date.today + 30
 )
 
-# Create visits
-3.times do
+3.times do |i|
   Visit.create!(
-    purchase_id: purchase1.id,
-    attended: true
+    purchase_id: purchase_client.id,
+    visited_at: Time.current - (i + 1).days
   )
 end
 
-2.times do
-  Visit.create!(
-    purchase_id: purchase1.id,
-    attended: false
-  )
-end
+
+Purchase.create!(
+  user_id: client_used_up.id,
+  pass_id: pass_crossfit.id,
+  remaining_visits: 0,
+  purchase_date: Time.current,
+  price: pass_crossfit.price,
+  valid_until: Date.today + 30
+)
+

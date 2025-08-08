@@ -6,11 +6,9 @@ module Queries
     type [ Types::PassType ], null: false
 
     def resolve(pass_id: nil)
-      raise GraphQL::ExecutionError, "Not authorized" unless context[:current_user].admin?
-
+      (!context[:current_user] || !context[:current_user].admin?) ? (raise GraphQL::ExecutionError, "Not authorized") : nil
       scope = Pass.includes(purchases: :user).order(:id)
-      scope = scope.where(pass_id: pass_id) if pass_id.present?
-      scope
+      pass_id.present? ? scope.where(id: pass_id) : scope
     end
   end
 end
