@@ -6,5 +6,6 @@ module Types
     field :expires_at, GraphQL::Types::ISO8601Date, null: false
     field :user, Types::UserType, null: false
     field :price, Float, null: false
+    field :purchases, [ Types::PurchaseType ], null: false
   end
 end

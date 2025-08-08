@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :purchase do
-    association :user, factory: [:user, :client]
+    association :user, factory: [ :user, :client ]
     association :pass
     remaining_visits { 10 }
     valid_until { 60.days.from_now.to_date }

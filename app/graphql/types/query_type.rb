@@ -19,7 +19,7 @@ module Types
     end
 
     field :all_passes, [ Types::PassType ], null: false
-
+    field :admin_pass_acquisitions, resolver: Queries::AdminPassAcquisitions
     def all_passes
       user = context[:current_user]
       raise GraphQL::ExecutionError, "Not authorized" unless user&.admin?
