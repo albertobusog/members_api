@@ -88,4 +88,3 @@ Purchase.create!(
   price: pass_crossfit.price,
   valid_until: Date.today + 30
 )
-
