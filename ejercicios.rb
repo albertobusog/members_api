@@ -37,16 +37,16 @@ def balanceado_multi?(s)
 end
 
 def pairs_with_sum(nums, target)
-  vistos      = Set.new        
-  pares_vistos = Set.new       
+  vistos      = Set.new
+  pares_vistos = Set.new
   res         = []
 
   nums.each do |x|
     y    = target - x
-    par  = (x <= y) ? [x, y] : [y, x]                     
+    par  = (x <= y) ? [ x, y ] : [ y, x ]
     (vistos.include?(y) && !pares_vistos.include?(par)) ? (res << par; pares_vistos << par) : nil
     vistos << x
   end
 
-  res.sort_by { |a, b| [a, b] }                          
+  res.sort_by { |a, b| [ a, b ] }
 end
