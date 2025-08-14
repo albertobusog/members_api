@@ -68,3 +68,8 @@ def merge_intervals(intervals)
 
   res
 end
+
+def anagrama?(palabra1, palabra2)
+  norm = ->(s) { s.downcase.gsub(/[^a-záéíóúüñ]/, "").chars.sort.join }
+  norm.call(palabra1) == norm.call(palabra2) ? true : false
+end
