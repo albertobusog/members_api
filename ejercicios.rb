@@ -50,3 +50,21 @@ def pairs_with_sum(nums, target)
 
   res.sort_by { |a, b| [ a, b ] }
 end
+
+def merge_intervals(intervals)
+  return [] if intervals.empty?
+
+  sorted = intervals.sort_by { |a,b| [a,b] }
+  res = [sorted.first.dup]
+
+  sorted.drop(1).each do |s,e|
+    last_e = res[-1]
+    overlap = (s <= last_e)
+
+    overlap ?
+      (res[-1][1] = (e > last_e) ? e : last_e) :  
+      (res << [s, e])                              
+  end
+
+  res
+end
