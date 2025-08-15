@@ -73,3 +73,10 @@ def anagrama?(palabra1, palabra2)
   norm = ->(s) { s.downcase.gsub(/[^a-záéíóúüñ]/, "").chars.sort.join }
   norm.call(palabra1) == norm.call(palabra2) ? true : false
 end
+
+def first_non_repeated(s)
+  conteo = Hash.new(0)
+  s.each_char { |ch| conteo[ch] += 1 unless ch == ' ' }
+  s.each_char { |ch| return ch if conteo[ch] == 1 }
+  nil
+end
