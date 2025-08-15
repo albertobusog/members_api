@@ -80,3 +80,9 @@ def first_non_repeated(s)
   s.each_char { |ch| return ch if conteo[ch] == 1 }
   nil
 end
+
+def group_anagrams(words)
+  grupos = Hash.new { |h, k| h[k] = [] }
+  words.each { |w| grupos[w.chars.sort.join] << w }
+  grupos.values
+end
