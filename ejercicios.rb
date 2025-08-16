@@ -1,4 +1,5 @@
 require 'set'
+require "date"
 
 def contar_vocales(texto)
   s = texto.to_s.downcase
@@ -85,4 +86,24 @@ def group_anagrams(words)
   grupos = Hash.new { |h, k| h[k] = [] }
   words.each { |w| grupos[w.chars.sort.join] << w }
   grupos.values
+end
+
+
+
+def age_calculator(date_str)
+  day, month, year = date_str.split("/").map(&:to_i)
+  full_date = Date.new(year, month, day)
+
+  today = Date.today
+  age = today.year - full_date.year
+  age -= 1 if (hoy.month < full_date.month) || (today.month == full_date.month && today.day < full_date.day)
+
+  birthday = Date.new(hoy.year, mes, dia)
+  message = (today >= full_datel) ? "Your birth day already past this year" : "Your birthday its comming"
+
+  {
+    age: age,
+    full_date: birthday.strftime("%A, %d of %B"),
+    message: message
+  }
 end
