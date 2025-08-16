@@ -107,3 +107,18 @@ def age_calculator(date_str)
     message: message
   }
 end
+
+def length_of_longest_substring(s)
+  last_pos = {}
+  left     = 0
+  best     = 0
+
+  s.each_char.with_index do |ch, right|
+    left = last_pos[ch] + 1 if last_pos.key?(ch) && last_pos[ch] >= left
+    last_pos[ch] = right
+    len = right - left + 1
+    best = (len > best) ? len : best
+  end
+
+  best
+end
