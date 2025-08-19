@@ -41,10 +41,10 @@ RSpec.describe "SignUp", type: :request do
     expect(data["errors"]).to be_nil
   end
 
-  it "SignUp with wrong email format " do 
+  it "SignUp with wrong email format " do
     post "/graphql",
       params: {
-        query: query, 
+        query: query,
         variables: {
           input: {
             email: "newcust",
@@ -54,7 +54,7 @@ RSpec.describe "SignUp", type: :request do
         }
       }.to_json,
       headers: { "Content-Type" => "application/json" }
-      
+
     expect(response).to have_http_status(:ok)
 
     json = JSON.parse(response.body)
@@ -68,7 +68,7 @@ RSpec.describe "SignUp", type: :request do
   it "SignUp with a role diferent as client or admin " do
     post "/graphql",
       params: {
-        query: query, 
+        query: query,
         variables: {
           input: {
             email: "newcust@demo.com",
@@ -82,10 +82,10 @@ RSpec.describe "SignUp", type: :request do
     expect(response).to have_http_status(:ok)
 
     json = JSON.parse(response.body)
-    #data = json["data"]["signUp"]
+    # data = json["data"]["signUp"]
 
     expect(json["data"]).to be_nil
     expect(json["errors"]).not_to be_nil
-    expect(data["errors"].first["message"]).to include("abmin is not a valid role")    
+    expect(data["errors"].first["message"]).to include("abmin is not a valid role")
   end
 end
