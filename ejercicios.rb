@@ -128,5 +128,5 @@ def first_unique_char(s)
   s.each_char { |ch| cont[ch] += 1 }
 
   unique = s.each_char.find { |ch| cont[ch] == 1 }
-  unique ? unique : nil  
+  unique ? unique : nil
 end
