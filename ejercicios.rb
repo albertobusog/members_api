@@ -122,3 +122,11 @@ def length_of_longest_substring(s)
 
   best
 end
+
+def first_unique_char(s)
+  cont = Hash.new(0)
+  s.each_char { |ch| cont[ch] += 1 }
+
+  unique = s.each_char.find { |ch| cont[ch] == 1 }
+  unique ? unique : nil  
+end
