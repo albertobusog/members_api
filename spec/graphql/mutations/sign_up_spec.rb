@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "SignUp", type: :request do
-  let(:invalid_role) {"admfdinn"}
+  let(:invalid_role) { "admfdinn" }
   let(:query) do
     <<-GQL
       mutation($input: SignUpInput!) {
@@ -79,7 +79,7 @@ RSpec.describe "SignUp", type: :request do
         }
       }.to_json,
       headers: { "Content-Type" => "application/json" }
-      
+
     expect(response).to have_http_status(:internal_server_error)
 
     json = JSON.parse(response.body)
