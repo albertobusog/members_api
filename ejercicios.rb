@@ -139,3 +139,14 @@ def fizzbuzz (n)
     (i % 5 == 0) ? "Buzz" : i.to_s
   end
 end
+
+def business_days_between(from, to, holidays: [])
+  # Normaliza a Date (acepta Date, Time o String ISO)
+  to_date = ->(x) do
+    x.is_a?(Date) ? x : Date.parse(x.to_s)
+  end
+
+  a = to_date.call(from)
+  b = to_date.call(to)
+
+end
