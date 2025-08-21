@@ -130,3 +130,12 @@ def first_unique_char(s)
   unique = s.each_char.find { |ch| cont[ch] == 1 }
   unique ? unique : nil
 end
+
+
+def fizzbuzz (n)
+  (1..n).map do |i|
+    (i % 15 == 0 ) ? "FizzBuzz" :
+    (i % 3 == 0 ) ? "Fizz" :
+    (i % 5 == 0 ) ? "Buzz" : i.to_s
+  end
+end
