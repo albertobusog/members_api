@@ -134,8 +134,8 @@ end
 
 def fizzbuzz (n)
   (1..n).map do |i|
-    (i % 15 == 0 ) ? "FizzBuzz" :
-    (i % 3 == 0 ) ? "Fizz" :
-    (i % 5 == 0 ) ? "Buzz" : i.to_s
+    (i % 15 == 0) ? "FizzBuzz" :
+    (i % 3 == 0) ? "Fizz" :
+    (i % 5 == 0) ? "Buzz" : i.to_s
   end
 end
