@@ -156,10 +156,6 @@ GEM
       logger
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
-    importmap-rails (2.2.0)
-      actionpack (>= 6.0.0)
-      activesupport (>= 6.0.0)
-      railties (>= 6.0.0)
     io-console (0.8.1)
     irb (1.15.2)
       pp (>= 0.6.0)
@@ -235,14 +231,17 @@ GEM
     parser (3.3.9.0)
       ast (~> 2.4.1)
       racc
+    pg (1.6.3)
+    pg (1.6.3-aarch64-linux)
+    pg (1.6.3-aarch64-linux-musl)
+    pg (1.6.3-arm64-darwin)
+    pg (1.6.3-x86_64-darwin)
+    pg (1.6.3-x86_64-linux)
+    pg (1.6.3-x86_64-linux-musl)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
     prism (1.4.0)
-    propshaft (1.2.1)
-      actionpack (>= 7.0.0)
-      activesupport (>= 7.0.0)
-      rack
     psych (5.2.6)
       date
       stringio
@@ -454,10 +453,9 @@ DEPENDENCIES
   faker
   graphiql-rails
   graphql (~> 2.5)
-  importmap-rails
   jbuilder
   kamal
-  propshaft
+  pg
   puma (>= 5.0)
   rails (~> 8.0.2)
   rspec-rails
