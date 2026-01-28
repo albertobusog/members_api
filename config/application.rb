@@ -8,6 +8,7 @@ Bundler.require(*Rails.groups)
 
 module MembersApi
   class Application < Rails::Application
+    
     config.active_record.query_log_tags_enabled = true
     config.active_record.query_log_tags = [
       # Rails query log tags:
@@ -19,6 +20,9 @@ module MembersApi
     ]
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
+    config.api_only = true
+    config.host << ".onrender.com"
+    config.eager_load = ENV["RAILS_ENV"] == "production"
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
@@ -29,7 +33,9 @@ module MembersApi
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
-    # config.time_zone = "Central Time (US & Canada)"
+    config.time_zone = "UTC"
+    config.active_record.default_timezone = :utc
+    config.log_level = :info
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end
