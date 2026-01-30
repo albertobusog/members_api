@@ -148,5 +148,4 @@ def business_days_between(from, to, holidays: [])
 
   a = to_date.call(from)
   b = to_date.call(to)
-
 end
