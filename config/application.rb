@@ -21,7 +21,7 @@ module MembersApi
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
     config.api_only = true
-    config.host << ".onrender.com"
+    config.hosts << ".onrender.com"
     config.eager_load = ENV["RAILS_ENV"] == "production"
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
