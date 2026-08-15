@@ -38,10 +38,12 @@ RSpec.describe "RegisterAttendance", type: :request do
     end
 
     it "fails when user its not authenticated" do
-      data = execute_register_attendance(headers: { "Content-Type" => "application/json" })
+      post "/graphql",
+        params: { query: mutation }.to_json,
+        headers: { "Content-Type" => "application/json" }
 
-      expect(data["success"]).to be false
-      expect(data["errors"]). to include ("Not authorized")
+      expect(response).to have_http_status(:unauthorized)
+      expect(JSON.parse(response.body)["errors"].first["message"]).to include("Not authorized")
     end
 
     it "fails if purchase has no remaining visits" do

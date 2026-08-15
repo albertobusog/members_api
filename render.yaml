@@ -1,0 +1,60 @@
+# Free-tier deployment for the Rails GraphQL API on Render.
+# Create the services from this blueprint: https://render.com/docs/blueprint-spec
+#
+# After the first deploy, set FRONTEND_ORIGINS on each service with the real
+# Vercel/Netlify URLs so the SPA can call /graphql.
+databases:
+  - name: members-api-qa-db
+    plan: free
+    databaseName: members_api_qa
+    user: members_api
+
+  - name: members-api-db
+    plan: free
+    databaseName: members_api_production
+    user: members_api
+
+services:
+  - type: web
+    name: members-api-qa
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: RAILS_ENV
+        value: qa
+      - key: RAILS_LOG_LEVEL
+        value: debug
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: DEVISE_JWT_SECRET_KEY
+        generateValue: true
+      - key: FRONTEND_ORIGINS
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: members-api-qa-db
+          property: connectionString
+
+  - type: web
+    name: members-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeploy: false
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: DEVISE_JWT_SECRET_KEY
+        generateValue: true
+      - key: FRONTEND_ORIGINS
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: members-api-db
+          property: connectionString
