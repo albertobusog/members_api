@@ -1,0 +1,18 @@
+# Netlify alternative to vercel.json. Set the base directory to `frontend`.
+[build]
+  base = "frontend"
+  publish = "dist"
+  command = "npm run build:production"
+
+# Preview/branch deploys are the QA environment.
+[context.deploy-preview]
+  command = "npm run build:qa"
+
+[context.branch-deploy]
+  command = "npm run build:qa"
+
+# SPA routing: react-router handles every path.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
