@@ -39,7 +39,10 @@ gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
-group :production do
+# Cross-Origin Resource Sharing so the decoupled SPA can call /graphql
+gem "rack-cors"
+
+group :production, :qa do
   gem "pg"
 end
 

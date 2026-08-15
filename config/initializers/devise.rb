@@ -16,14 +16,15 @@ Devise.setup do |config|
   # by default. You can change it below and use your own secret key.
   # config.secret_key = '852c15350fbfef3d063b361b7aa92f7d3fcdf3b5bf55e329acf46d0bc4068bb36141f842ca6763a1a636d041d48a63ead1cbe010df4532d897194aba40762bd5'
   config.jwt do |jwt|
-  jwt.secret = ENV["DEVISE_JWT_SECRET_KEY"] || "7a0e29ed8fde375b2192ba9f7ea1a561"
-  #jwt.secret = ENV.fetch("DEVISE_JWT_SECRET_KEY") {
-  #    Rails.application.credentials.dig(:devise, :jwt_secret_key) || "7a0e29ed8fde375b2192ba9f7ea1a561"
-  #  }
-  jwt.dispatch_requests = [ [ "POST", %r{^/graphql$} ] ]
-  jwt.revocation_requests = [ [ "POST", %r{^/graphql$} ] ]
-  jwt.expiration_time = 1.day.to_i
-end
+    jwt.secret = ENV["DEVISE_JWT_SECRET_KEY"] || Rails.application.credentials.dig(:devise, :jwt_secret_key) || "7a0e29ed8fde375b2192ba9f7ea1a561"
+    # Tokens are issued by the SignIn/SignUp mutations and read by
+    # GraphqlController, so the dispatch/revocation middleware is not used: it
+    # would raise (500) on malformed tokens sent by the SPA instead of letting
+    # the controller answer 401.
+    jwt.dispatch_requests = []
+    jwt.revocation_requests = []
+    jwt.expiration_time = ENV.fetch("DEVISE_JWT_EXPIRATION_TIME", 1.day.to_i).to_i
+  end
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
   # config.parent_controller = 'DeviseController'
